@@ -8,14 +8,24 @@ export default async function hanoi(){
     for (let i = 0; i < number; i++) {
         initTower.push(i+1); 
     }
+
+    let towers = {
+        '1' : 'A',
+        '2' : 'B',
+        '3' : 'C'
+    }
+
     let towerRods = {
-        'A' : initTower,
+        'A' : [],
         'B' : [],
         'C' : []
     }
+
+    let auxRod = 6 - options.from - options.to;
+    towerRods[towers[options.from]] = initTower;
     console.log(towerRods);
     var selector = this.selector;
-    await towerOfHanoi(number, 'A', options.to, 'B', towerRods, selector);
+    await towerOfHanoi(number, towers[options.from], towers[options.to], towers[auxRod], towerRods, selector);
 }
 
 async function towerOfHanoi(number, fromRod, toRod, auxRod, towerRods, selector){

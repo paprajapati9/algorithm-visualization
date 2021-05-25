@@ -108,3 +108,24 @@ body{
     margin-left: -45px;
     position: absolute;
 }
+
+@media screen and (max-width:460px) {
+    .pp-hanoi-tower-container{
+        grid-gap: 80px;
+    }
+
+    .pp-hanoi-tower-element-1{
+        width: 30px;
+        margin-left: -13px;
+    }
+    
+    .pp-hanoi-tower-element-2{
+        width: 45px;
+        margin-left: -20px;
+    }
+    
+    .pp-hanoi-tower-element-3{
+        width: 60px;
+        margin-left: -28px;
+    }
+}
