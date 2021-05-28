@@ -5,12 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algo viz Test</title>
-    <script src="dist/PPviz.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="dist/PPviz.min.css">
+    <script src="../dist/PPviz.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="../dist/PPviz.min.css">
+    <link type="text/css" rel="stylesheet" href="test.css">
 </head>
 <body>
     <div id="pp-algoviz-selector" class="pp-algoviz-dashboard">
-        <h2>Hanoi Tower Algorithm Visualization</h2>
+        <h2>BFS Visualization</h2>
         <form class="pp-form">
             <div class="pp-form-row">
                 <label class="pp-form-row-label">From Tower</label>
@@ -28,19 +29,7 @@
                 <button type="submit">Run</button>
             </div>
         </form>
-        <div class="pp-hanoi-tower-container">
-            <div class="pp-hanoi-tower-rod rodA">
-                <div class="pp-hanoi-tower-element pp-hanoi-tower-element-3"></div>
-                <div class="pp-hanoi-tower-element pp-hanoi-tower-element-2"></div>
-                <div class="pp-hanoi-tower-element pp-hanoi-tower-element-1"></div>
-                <p class="pp-hanoi-tower-name">Tower A</p>
-            </div>
-            <div class="pp-hanoi-tower-rod rodB">
-                <p class="pp-hanoi-tower-name">Tower B</p>
-            </div>
-            <div class="pp-hanoi-tower-rod rodC">
-                <p class="pp-hanoi-tower-name">Tower C</p>
-            </div>
+        <div id="pp-graph-container" class="pp-graph-container">
         </div>
     </div>
     <script src="test.js"></script>
