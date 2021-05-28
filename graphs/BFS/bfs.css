@@ -7,4 +7,5 @@ table {
 table td{
     width: 25px;
     height: 23px;
+    cursor: pointer;
 }
