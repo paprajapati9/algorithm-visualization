@@ -2,8 +2,9 @@ import style from "./bfs.css";
 
 export default async function bfs(){
     let graph = this.createGraph(this.selector, this.options);
-    console.log(this, "graph");
+    console.log(graph, "graph");
     let visited = graph.visited;
+    let parent = graph.parent;
     let graphAdj = graph.graphAdj;
     // let stack = new Stack(); 
     let queue = new Queue();
@@ -19,27 +20,41 @@ export default async function bfs(){
     console.log(startNode, "startNode");
     console.log(endNode, "endNode");
     queue.enqueue(startNode); 
-    console.log(queue, "queue");
+
+    let nodeOptions = {
+        selector: this.selector,
+        rows : graph.rows,
+        columns : graph.columns,
+        startNode : startNode,
+        endNode : endNode
+    }
+
+    let path = Array();
+    
     while (!queue.isEmpty()) {
         let visiting = queue.dequeue();
-        console.log(visiting, "visiting");
-        let visitingRow = parseInt(visiting/graph.columns);
-        console.log(visitingRow, "visitingRow");
+        await this.colorVisitingNode(visiting, nodeOptions);
         if(visiting == endNode){
             console.log("Found the endNode");
             break;
         }
-        console.log(`we visited ${visiting}`);
-        for (let j = 0; j < graphAdj[visitingRow].length; j++) {
-            let visitedJ = visitingRow*graph.columns + j;
-            if ((graphAdj[visitingRow][j] === 1) && (visited[visitedJ] === false)) {  
-                visited[visitedJ] = true;
-                queue.enqueue(visitedJ);
+        for (let j = 0; j < graphAdj[visiting].length; j++) {
+            let indexJ = visiting + graphAdj[visiting][j];
+            if ((graphAdj[visiting][j] != 0) && (visited[indexJ] === false)) {  
+                visited[indexJ] = true;
+                parent[indexJ] = visiting;
+                queue.enqueue(indexJ);
             }
         }
-        console.log(queue, "queue");
     }
-
+    let current = endNode;
+    while(current > 0){
+		path.push(current);
+		current = parent[current];
+	}
+    path.reverse();
+    console.log(path, "path");
+    await this.colorShortestPath(path, nodeOptions);
 }
 
 function Queue() {
