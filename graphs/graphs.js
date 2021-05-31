@@ -1,12 +1,12 @@
 import bfs from "./BFS/bfs"
 
 export default function GraphsViz({selector, options={}}){
-
     this.selector = selector;
     this.options = options;
-    this.createGraph = createGraph;
+    this.graph = createGraph(selector, options);
     this.colorVisitingNode = colorVisitingNode;
     this.colorShortestPath = colorShortestPath;
+    this.createGraph = createGraph;
 }
 
 GraphsViz.prototype.bfs = bfs;
@@ -29,15 +29,18 @@ const createGraph = (selector, options) => {
             td.setAttribute('colspan', 1);
             td.setAttribute('grow', trel);
             td.setAttribute('gcolumn', tdel);
-            tr.append(td);
+            td.classList.add("graph-node");
             if(trel == options.startRow && tdel == options.startCol){
                 td.classList.add("start-node");
                 td.innerHTML = startSvg;
+                td.setAttribute("draggable", true)
             }
             if(trel == options.endRow && tdel == options.endCol){
                 td.classList.add("end-node");
                 td.innerHTML = endSvg;
+                td.setAttribute("draggable", true)
             }
+            tr.append(td);
         }
         table.append(tr);
     }
@@ -80,7 +83,7 @@ async function colorVisitingNode(node, options) {
     let gcolumn = parseInt(node%options.columns);
     let nodeElement = graphContainer.querySelector(`td[grow='${grow}'][gcolumn='${gcolumn}']`);
     nodeElement.classList.add("visited");
-    await sleep(20);
+    await sleep(10);
 }
 
 
@@ -94,7 +97,7 @@ async function colorShortestPath(path, options) {
         let gcolumn = parseInt(node%options.columns);
         let nodeElement = graphContainer.querySelector(`td[grow='${grow}'][gcolumn='${gcolumn}']`);
         nodeElement.classList.add("shortest-path");
-        await sleep(70);
+        await sleep(60);
     }
 }
 
@@ -120,3 +123,42 @@ const startSvg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://ww
 <path style="fill:#6ECDFB;" d="M306.986,178.809c-3.885,0-7.346-2.754-8.102-6.711c-0.854-4.479,2.084-8.805,6.564-9.66   l79.132-15.106c0.934-8.191,2.118-24.732-0.313-44.207c-4.554-36.472-18.98-65.539-42.881-86.397   c-3.435-2.999-3.79-8.215-0.793-11.652c3.002-3.436,8.217-3.79,11.653-0.793c26.796,23.383,43.56,57.04,48.476,97.333   c3.679,30.133-0.478,53.246-0.656,54.215c-0.619,3.349-3.228,5.976-6.573,6.614l-84.948,16.217   C308.021,178.76,307.5,178.809,306.986,178.809z"/>
 <path style="fill:#6ECDFB;" d="M443.397,450.253c-1.657,0-3.331-0.498-4.785-1.534c-3.714-2.646-4.579-7.803-1.934-11.517   c32.31-45.344,38.059-95.99,37.193-130.494c-0.714-28.489-5.922-51.03-8.483-60.528l-159.487-21.309   c-4.52-0.604-7.695-4.759-7.091-9.279c0.603-4.521,4.759-7.698,9.279-7.092l164.82,22.021c3.134,0.418,5.753,2.59,6.746,5.591   c0.392,1.186,9.628,29.511,10.712,69.624c1.005,37.171-5.16,91.814-40.239,141.047   C448.518,449.047,445.976,450.253,443.397,450.253z"/></g><g><path style="fill:#1895C2;" d="M237.461,165.755c-4.562,0-8.258-3.697-8.258-8.258v-39.249c0-4.561,3.696-8.258,8.258-8.258   s8.258,3.697,8.258,8.258v39.249C245.719,162.057,242.023,165.755,237.461,165.755z"/>
 <path style="fill:#1895C2;" d="M274.538,165.755c-4.562,0-8.258-3.697-8.258-8.258v-39.249c0-4.561,3.696-8.258,8.258-8.258   c4.562,0,8.258,3.697,8.258,8.258v39.249C282.796,162.057,279.1,165.755,274.538,165.755z"/><path style="fill:#1895C2;" d="M284.66,263.586L256,241.565l-28.661,22.021c-32.724,11.759-56.144,43.052-56.144,79.817   c0,46.84,37.976,84.805,84.805,84.805s84.805-37.965,84.805-84.805C340.804,306.638,317.384,275.345,284.66,263.586z"/></g><path style="fill:#6ECDFB;" d="M283.681,146.487h-55.362c-12.883,0-23.31,10.438-23.31,23.31v70.524  c0,12.552,9.91,22.748,22.33,23.266h57.322c12.42-0.518,22.33-10.713,22.33-23.266v-70.524  C306.99,156.925,296.563,146.487,283.681,146.487z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>`;
+
+/* Events fired on the drag target */
+document.addEventListener("dragstart", function(event) {
+    let node = event.target;
+    event.dataTransfer.setData("node", `td[grow='${node.getAttribute('grow')}'][gcolumn='${node.getAttribute('gcolumn')}']`);
+});
+
+document.addEventListener("drag", function(event) {
+    console.log("dragging");
+});
+
+/* Events fired on the drop target */
+document.addEventListener("dragover", function(event) {
+    event.preventDefault();
+});
+  
+document.addEventListener("drop", function(event) {
+    event.preventDefault();
+    console.log("Dropping");
+    if ( event.target.classList.contains("graph-node")) {
+        var data = event.dataTransfer.getData("node");
+        let oldEl = document.querySelector(data);
+        let inner = oldEl.innerHTML;
+        if(oldEl.classList.contains("start-node")){
+            event.target.classList.add("start-node");
+            oldEl.classList.remove("start-node");
+        }
+        else if(oldEl.classList.contains("end-node")){
+            event.target.classList.add("end-node");
+            oldEl.classList.remove("end-node");
+        }
+        event.target.setAttribute("draggable", true);
+        oldEl.setAttribute("draggable", false)
+        oldEl.innerHTML = event.target.innerHTML;
+        event.target.innerHTML = inner;
+        console.log("Dropped", data);
+        console.log("Dropped target", event.target);
+    }
+});

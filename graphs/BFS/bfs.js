@@ -1,7 +1,12 @@
 import style from "./bfs.css";
 
 export default async function bfs(){
-    let graph = this.createGraph(this.selector, this.options);
+    let oldGraph = document.querySelector(".pp-graph-table");
+    let graph = this.graph;
+    if(oldGraph){
+        oldGraph.parentNode.removeChild(oldGraph)
+        graph = this.createGraph(this.selector, this.options);
+    }
     console.log(graph, "graph");
     let visited = graph.visited;
     let parent = graph.parent;
@@ -17,8 +22,6 @@ export default async function bfs(){
     let endNode = graph.columns*endRow + endCol;
 
     visited[startNode] = true;
-    console.log(startNode, "startNode");
-    console.log(endNode, "endNode");
     queue.enqueue(startNode); 
 
     let nodeOptions = {
@@ -80,7 +83,6 @@ Queue.prototype.dequeue = function() {
         return undefined;
   
     const element = this.queue[this.head];
-    console.log(this);
     delete this.queue[this.head++];
     return element;
 }

@@ -1,4 +1,3 @@
-
 let graphsViz = new algoviz.GraphsViz({
     selector: "pp-graph-container",
     options: {
@@ -8,4 +7,18 @@ let graphsViz = new algoviz.GraphsViz({
         endCol : 9
     }
 });
-graphsViz.bfs();
+
+let submitBotton = document.querySelector(".pp-form button[type='submit']");
+submitBotton.addEventListener('click', (e)=>{
+    e.preventDefault();
+    let startNode = document.querySelector(".start-node"),
+        endNode = document.querySelector(".end-node");
+    let options = {
+        startRow: parseInt(startNode.getAttribute("grow")),
+        startCol: parseInt(startNode.getAttribute("gcolumn")),
+        endRow: parseInt(endNode.getAttribute("grow")),
+        endCol: parseInt(endNode.getAttribute("gcolumn"))
+    }
+    graphsViz.options = options;
+    graphsViz.bfs();
+});
