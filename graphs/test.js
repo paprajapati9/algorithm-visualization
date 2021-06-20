@@ -2,7 +2,7 @@ let graphsViz = new algoviz.GraphsViz({
     selector: "pp-graph-container",
     options: {
         startRow : 2,
-        startCol : 34,
+        startCol : 15,
         endRow : 8,
         endCol : 9
     }
