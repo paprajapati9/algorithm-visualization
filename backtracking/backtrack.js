@@ -1,4 +1,4 @@
-import hanoi from "./sudoku/sudoku"
+import sudoku from "./sudoku/sudoku"
 
 export default function BacktrackViz({selector, options={}}){
     this.selector = selector;
