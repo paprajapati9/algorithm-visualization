@@ -1,16 +1,26 @@
+import style from "./sudoku.css";
+
 export default async function sudoku(){
-    solveSudoku();
+    if(this.options.solve){
+        solveSudoku(this.selector, this.options.sudoku);
+    }else{
+        return generateSudoku(this.selector);
+    }
 }
 
-const generateSudoku = () => {
-    
-}
-
-const solveSudoku = () => {
+const generateSudoku = async(selector) => {
     let sudoku = new Sudoku();
-    console.log(sudoku);
-    sudoku.solve(0, 0);
-    // console.log(sudoku);
+    await sudoku.solve(0, 0, false, selector);
+    sudoku.generateUniqueBoard();
+    sudoku.createBoardDisplay(selector);
+    console.log(sudoku, "before solve");
+    return sudoku;
+}
+
+const solveSudoku = async(selector, sudoku) => {
+    sudoku.fillOptions = Array(9).fill().map((_, index) => index + 1);
+    await sudoku.solve(0, 0, true, selector);
+    console.log(sudoku, "after solve");
 }
 
 function Sudoku() {
@@ -19,6 +29,9 @@ function Sudoku() {
         this.board[index] = Array(9).fill(0);
     }
     this.count = Array(9).fill(0);
+    this.fillOptions = Array(9).fill().map((_, index) => index + 1);
+    this.fillOptions.sort(() => Math.random() - 0.5);
+    this.fillOptions.sort(() => Math.random() - 0.5);
 }
 
 Sudoku.prototype.resetCount = function() {
@@ -27,7 +40,7 @@ Sudoku.prototype.resetCount = function() {
     }
 }
 
-Sudoku.prototype.solve = function(startRow, startCol) {
+Sudoku.prototype.solve = async function(startRow, startCol, fill=false, selector) {
     if(startRow==8 && startCol==9) return 1;
         if (startCol == 9) {
             startRow++;
@@ -35,19 +48,26 @@ Sudoku.prototype.solve = function(startRow, startCol) {
         }
         let val = this.board[startRow][startCol];
         let k;
+
         if(val == 0){ //empty place
-            for(k=1; k<=9; k++){
-                this.board[startRow][startCol] = k;
+            for(k=0; k<this.fillOptions.length; k++){
+                this.board[startRow][startCol] = this.fillOptions[k];
+                if(fill) {
+                    await this.fillBoard(startRow, startCol, selector);
+                }
                 if(!this.isValidRow(startRow) || !this.isValidColumn(startCol)) continue;
                 if(!this.isValidBox(3*parseInt(startRow/3), 3*parseInt(startCol/3))) continue;
-                if(this.solve(startRow, startCol+1)) return 1;
+                if(await this.solve(startRow, startCol+1, fill, selector)) return 1;
             }
-            if(k == 10) {
+            if(k == 9) {
                 this.board[startRow][startCol] = 0;
+                if(fill) {
+                    await this.fillBoard(startRow, startCol, selector);
+                }
                 return 0;
             }
         }else{
-            return this.solve(startRow, startCol+1);
+            return await this.solve(startRow, startCol+1, fill, selector);
         }
         return 0;
 }
@@ -110,4 +130,54 @@ Sudoku.prototype.isValidBox = function(startRow, startCol) {
         }
     }
     return true;
+}
+
+Sudoku.prototype.generateUniqueBoard = function(){
+    let arr = [];
+    while(arr.length < 64){
+        let r = Math.floor(Math.random() * 80);
+        if(arr.indexOf(r) === -1) {
+            arr.push(r);
+            this.board[parseInt(r/9)][r%9] = 0;
+        }
+    }
+}
+
+Sudoku.prototype.createBoardDisplay = function(selector){
+    let container = document.getElementById(selector);
+    let board = document.createElement('table');
+    board.className = 'pp-sudoku-board';
+    for (let i = 0; i < this.board.length; i++) {
+        let bRow = document.createElement('tr');
+        bRow.setAttribute("boardRow", i);
+        for (let j = 0; j < this.board[i].length; j++) {
+            let bCol = document.createElement('td');
+            if(this.board[i][j]) bCol.textContent = this.board[i][j];
+            bCol.setAttribute("boardCol", j);
+            bCol.setAttribute("boardRow", i);
+            bRow.append(bCol);
+        }
+        board.append(bRow);
+    }
+    container.append(board);
+}
+
+Sudoku.prototype.fillBoard = async function(row, column, selector){
+    await sleep(10);
+    let container = document.getElementById(selector);
+    let board = container.querySelector('.pp-sudoku-board');
+    console.log(board, board);
+    let cell = board.querySelector(`[boardRow='${row}'][boardCol='${column}']`);
+    cell.textContent = this.board[row][column] ? this.board[row][column] : '';
+}
+
+/**
+ * 
+ * @param {int} ms : time in milliseconds for which the program needs to be paused
+ * @returns : A seTimeout promise that is resolved ms milliseconds later
+ */
+ function sleep(ms) {
+    return new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
 }

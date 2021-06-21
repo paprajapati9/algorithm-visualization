@@ -1,10 +1,18 @@
 let backtrackViz = new algoviz.BacktrackViz({
     selector: "pp-backtrack-container",
-    options: {}
+    options: {
+        solve: false
+    }
 });
+
+let sudoku = backtrackViz.sudoku();
 
 let submitBotton = document.querySelector(".pp-form button[type='submit']");
 submitBotton.addEventListener('click', (e)=>{
     e.preventDefault();
-    backtrackViz.sudoku();
+    sudoku.then(sudokuObject =>{
+        backtrackViz.options.solve = true;
+        backtrackViz.options.sudoku = sudokuObject;
+        backtrackViz.sudoku();
+    });
 });

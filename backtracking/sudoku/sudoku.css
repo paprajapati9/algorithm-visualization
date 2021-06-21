@@ -1,0 +1,14 @@
+.pp-sudoku-board {
+    border: 2px solid #5BC3BE;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.pp-sudoku-board td{
+    border: 1px solid;
+    width: 35px;
+    height: 31px;
+}
+
+  
+ 
