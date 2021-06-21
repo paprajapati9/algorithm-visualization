@@ -163,7 +163,7 @@ Sudoku.prototype.createBoardDisplay = function(selector){
 }
 
 Sudoku.prototype.fillBoard = async function(row, column, selector){
-    await sleep(10);
+    await sleep(20);
     let container = document.getElementById(selector);
     let board = container.querySelector('.pp-sudoku-board');
     console.log(board, board);
