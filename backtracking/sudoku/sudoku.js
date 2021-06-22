@@ -2,14 +2,15 @@ import style from "./sudoku.css";
 
 export default async function sudoku(){
     if(this.options.solve){
-        solveSudoku(this.selector, this.options.sudoku);
+        solveSudoku(this.selector, this.options);
     }else{
-        return generateSudoku(this.selector);
+        return generateSudoku(this.selector, this.options);
     }
 }
 
-const generateSudoku = async(selector) => {
-    let sudoku = new Sudoku();
+const generateSudoku = async(selector, options) => {
+    let vizSpeed = options.speed;
+    let sudoku = new Sudoku(vizSpeed);
     await sudoku.solve(0, 0, false, selector);
     sudoku.generateUniqueBoard();
     sudoku.createBoardDisplay(selector);
@@ -17,13 +18,16 @@ const generateSudoku = async(selector) => {
     return sudoku;
 }
 
-const solveSudoku = async(selector, sudoku) => {
+const solveSudoku = async(selector, options) => {
+    let sudoku = options.sudoku;
     sudoku.fillOptions = Array(9).fill().map((_, index) => index + 1);
+    console.log(options, 'options');
+    sudoku.vizSpeed = options.speed;
     await sudoku.solve(0, 0, true, selector);
     console.log(sudoku, "after solve");
 }
 
-function Sudoku() {
+function Sudoku(vizSpeed) {
     this.board = new Array(9);
     for (let index = 0; index < this.board.length; index++) {
         this.board[index] = Array(9).fill(0);
@@ -32,6 +36,7 @@ function Sudoku() {
     this.fillOptions = Array(9).fill().map((_, index) => index + 1);
     this.fillOptions.sort(() => Math.random() - 0.5);
     this.fillOptions.sort(() => Math.random() - 0.5);
+    this.vizSpeed = vizSpeed;
 }
 
 Sudoku.prototype.resetCount = function() {
@@ -163,10 +168,14 @@ Sudoku.prototype.createBoardDisplay = function(selector){
 }
 
 Sudoku.prototype.fillBoard = async function(row, column, selector){
-    await sleep(20);
+    let speed = {
+        'slow' : 80,
+        'medium' : 40,
+        'fast' : 20
+    }
+    await sleep(speed[this.vizSpeed]);
     let container = document.getElementById(selector);
     let board = container.querySelector('.pp-sudoku-board');
-    console.log(board, board);
     let cell = board.querySelector(`[boardRow='${row}'][boardCol='${column}']`);
     cell.textContent = this.board[row][column] ? this.board[row][column] : '';
 }
