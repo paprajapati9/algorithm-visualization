@@ -7,19 +7,30 @@ export default async function mergesort(){
 }
 
 const solveSort = (selector, options) => {
-    let mergesort = new MergeSort(options);
+    let mergesort = new MergeSort(selector, options);
     console.log(mergesort, "mergesort");
     mergesort.sort(0, options.size-1);
     console.log(mergesort, "mergesort");
 }
 
-function MergeSort(options){
+function MergeSort(selector, options){
     this.array = options.array;
+    this.selector = selector;
     console.log(this.array, "this.array");
 }
 
-MergeSort.prototype.updateView = function(){
-
+MergeSort.prototype.updateView = function(start, sortedArr){
+    let container = document.getElementById(this.selector);
+    console.log(container, "container");
+    for (let i = 0; i < sortedArr.length; i++) {
+        let el1 = container.querySelector(`.pp-array-element[data-value='${this.array[start]}']`);
+        let el2 = container.querySelector(`.pp-array-element[data-value='${sortedArr[i]}']`);
+        console.log(el1, "el1");
+        console.log(el2, "el2");
+        let parent = el1.parentNode;
+        parent.insertBefore(el2, el1);
+        start++;
+    }
 }
 
 MergeSort.prototype.sort = function(start, end){
@@ -66,6 +77,9 @@ MergeSort.prototype.merge = function(start, mid, end){
     } 
 
     ar1Index = start;
+    
+    this.updateView(start, mergeArray);
+
     for (let i = 0; i < mergeArray.length; i++) {
         this.array[ar1Index] = mergeArray[i];
         ar1Index++;

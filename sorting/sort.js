@@ -32,6 +32,7 @@ Sort.prototype.createView = function(selector) {
         let maxHeight = 300,
             maxWidth = container.clientWidth;
         graphElement.className = 'pp-array-element';
+        graphElement.setAttribute('data-value', this.array[i]);
         graphElement.style.height = (this.array[i]/this.array.length)*maxHeight+'px';
         graphElement.style.width = (maxWidth/this.array.length)+'px';
         arrayGraph.append(graphElement);
