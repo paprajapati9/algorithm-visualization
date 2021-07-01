@@ -15,8 +15,9 @@ submitBotton.addEventListener('click', (e)=>{
     e.preventDefault();
     let speed = document.querySelector(".pp-viz-speed");
     mergesort.then(sortArray =>{
+        console.log(sortArray, "sort array");
         sortingViz.options.solve = true;
-        sortingViz.options.array = sortArray;
+        sortingViz.options.array = sortArray.array;
         sortingViz.options.speed = speed.value;
         sortingViz.mergesort();
     });

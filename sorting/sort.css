@@ -1,0 +1,14 @@
+.pp-array-view{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+}
+
+.pp-array-element{
+    background: yellow;
+    border: 1px solid darkgoldenrod;
+}
+
+.pp-sorting-container{
+    width: 90%;
+}
