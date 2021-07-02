@@ -2,7 +2,7 @@ let sortingViz = new algoviz.SortingViz({
     selector: "pp-sorting-container",
     options: {
         solve: false,
-        size: 30,
+        size: 50,
         speed: 'fast'
     }
 });

@@ -12,3 +12,14 @@
 .pp-sorting-container{
     width: 90%;
 }
+
+.pp-active-sort-elment{
+    animation: blinker 0.2s linear;
+}
+
+@keyframes blinker {
+    50% {
+      background: green;
+    }
+}
+ 
