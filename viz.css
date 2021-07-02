@@ -1,0 +1,85 @@
+/** Algoviz container */
+body{
+    align-items: center;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+}
+
+.pp-algoviz-dashboard{
+    font-family: sans-serif;
+    display: grid;
+    grid-gap: 50px;
+    justify-items: center;
+}
+
+/** Navbar */
+.pp-viz-navabar{
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    justify-content: center;
+    width: 90%;
+}
+
+.pp-viz-navabar .pp-form{
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.pp-viz-navabar .pp-form-row{
+    align-items: center;
+}
+
+/** Forms */
+.pp-form{
+    display: grid;
+    grid-gap: 20px;
+    justify-self: center;
+}
+
+.pp-form-row-label{
+    width: 150px;
+    display: inline-flex;
+}
+
+.pp-form-row input,
+.pp-form-row button{
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.pp-form-row button{
+    color: #ffffff;
+    background-color: rgb(77, 129, 240);
+    cursor: pointer;
+}
+
+.pp-form-row input{
+    color: #212529;
+    background-color: #fff;
+}
+
+.pp-form-row input::placeholder{
+   opacity: 0.5;
+}
+
+@media screen and (max-width:700px) {
+    .pp-viz-navabar{
+        grid-template-columns: unset;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width:480px) {
+    .pp-viz-navabar .pp-form{
+        grid-auto-flow: row;
+    }
+}

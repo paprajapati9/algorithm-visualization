@@ -1,15 +1,3 @@
-.pp-viz-navabar{
-    display: grid;
-    grid-template-columns: 1fr max-content;
-    justify-content: center;
+.pp-sorting-container{
     width: 90%;
-}
-
-.pp-viz-navabar .pp-form{
-    display: grid;
-    grid-auto-flow: column;
-}
-
-.pp-viz-navabar .pp-form-row{
-    align-items: center;
 }

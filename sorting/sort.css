@@ -9,10 +9,6 @@
     border: 1px solid darkgoldenrod;
 }
 
-.pp-sorting-container{
-    width: 90%;
-}
-
 .pp-active-sort-elment{
     animation: blinker 0.2s linear;
 }
