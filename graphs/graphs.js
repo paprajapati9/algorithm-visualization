@@ -32,14 +32,13 @@ const createGraph = (selector, options) => {
             td.classList.add("graph-node");
             if(trel == options.startRow && tdel == options.startCol){
                 td.classList.add("start-node");
-                td.innerHTML = startSvg;
-                td.setAttribute("draggable", true)
             }
-            if(trel == options.endRow && tdel == options.endCol){
+            else if(trel == options.endRow && tdel == options.endCol){
                 td.classList.add("end-node");
-                td.innerHTML = endSvg;
-                td.setAttribute("draggable", true)
             }
+            td.addEventListener("mousedown", mouseDown)
+            td.addEventListener("mouseenter", mouseEnter);
+            td.addEventListener("mouseleave", mouseLeave);
             tr.append(td);
         }
         table.append(tr);
@@ -124,41 +123,40 @@ const startSvg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://ww
 <path style="fill:#6ECDFB;" d="M443.397,450.253c-1.657,0-3.331-0.498-4.785-1.534c-3.714-2.646-4.579-7.803-1.934-11.517   c32.31-45.344,38.059-95.99,37.193-130.494c-0.714-28.489-5.922-51.03-8.483-60.528l-159.487-21.309   c-4.52-0.604-7.695-4.759-7.091-9.279c0.603-4.521,4.759-7.698,9.279-7.092l164.82,22.021c3.134,0.418,5.753,2.59,6.746,5.591   c0.392,1.186,9.628,29.511,10.712,69.624c1.005,37.171-5.16,91.814-40.239,141.047   C448.518,449.047,445.976,450.253,443.397,450.253z"/></g><g><path style="fill:#1895C2;" d="M237.461,165.755c-4.562,0-8.258-3.697-8.258-8.258v-39.249c0-4.561,3.696-8.258,8.258-8.258   s8.258,3.697,8.258,8.258v39.249C245.719,162.057,242.023,165.755,237.461,165.755z"/>
 <path style="fill:#1895C2;" d="M274.538,165.755c-4.562,0-8.258-3.697-8.258-8.258v-39.249c0-4.561,3.696-8.258,8.258-8.258   c4.562,0,8.258,3.697,8.258,8.258v39.249C282.796,162.057,279.1,165.755,274.538,165.755z"/><path style="fill:#1895C2;" d="M284.66,263.586L256,241.565l-28.661,22.021c-32.724,11.759-56.144,43.052-56.144,79.817   c0,46.84,37.976,84.805,84.805,84.805s84.805-37.965,84.805-84.805C340.804,306.638,317.384,275.345,284.66,263.586z"/></g><path style="fill:#6ECDFB;" d="M283.681,146.487h-55.362c-12.883,0-23.31,10.438-23.31,23.31v70.524  c0,12.552,9.91,22.748,22.33,23.266h57.322c12.42-0.518,22.33-10.713,22.33-23.266v-70.524  C306.99,156.925,296.563,146.487,283.681,146.487z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>`;
 
+
+var nodeDragOn=false;
+var startDrag = false;
+var endDrag = false;
+
 /* Events fired on the drag target */
-document.addEventListener("dragstart", function(event) {
-    let node = event.target;
-    event.dataTransfer.setData("node", `td[grow='${node.getAttribute('grow')}'][gcolumn='${node.getAttribute('gcolumn')}']`);
-});
-
-document.addEventListener("drag", function(event) {
-    console.log("dragging");
-});
-
-/* Events fired on the drop target */
-document.addEventListener("dragover", function(event) {
-    event.preventDefault();
-});
-  
-document.addEventListener("drop", function(event) {
-    event.preventDefault();
-    console.log("Dropping");
-    if ( event.target.classList.contains("graph-node")) {
-        var data = event.dataTransfer.getData("node");
-        let oldEl = document.querySelector(data);
-        let inner = oldEl.innerHTML;
-        if(oldEl.classList.contains("start-node")){
-            event.target.classList.add("start-node");
-            oldEl.classList.remove("start-node");
+const mouseDown = function() {
+    if(!nodeDragOn){
+        nodeDragOn = true;
+        if(this.classList.contains("start-node")){
+            startDrag = true;
         }
-        else if(oldEl.classList.contains("end-node")){
-            event.target.classList.add("end-node");
-            oldEl.classList.remove("end-node");
+        if(this.classList.contains("end-node")){
+            endDrag = true;
         }
-        event.target.setAttribute("draggable", true);
-        oldEl.setAttribute("draggable", false)
-        oldEl.innerHTML = event.target.innerHTML;
-        event.target.innerHTML = inner;
-        console.log("Dropped", data);
-        console.log("Dropped target", event.target);
+    }else{
+        startDrag = false;
+        endDrag = false
+        nodeDragOn = false;
     }
-});
+};
+
+const mouseEnter = function() {
+    if(nodeDragOn){
+
+        if(startDrag) this.classList.add("start-node");
+
+        if(endDrag) this.classList.add("end-node");
+    }
+};
+
+const mouseLeave = function() {
+    if(nodeDragOn){
+        if(startDrag) this.classList.remove("start-node");
+        if(endDrag) this.classList.remove("end-node");
+    }
+};
