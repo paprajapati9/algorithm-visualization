@@ -3,15 +3,15 @@ import bfs from "./BFS/bfs"
 export default function GraphsViz({selector, options={}}){
     this.selector = selector;
     this.options = options;
-    this.graph = createGraph(selector, options);
+    this.updateView = updateView;
     this.colorVisitingNode = colorVisitingNode;
     this.colorShortestPath = colorShortestPath;
-    this.createGraph = createGraph;
+    this.createView = createView;
 }
 
 GraphsViz.prototype.bfs = bfs;
 
-const createGraph = (selector, options) => {
+const createView = (selector, options) => {
     let graphContainer = document.getElementById(selector);
     let table = document.createElement('table'),
         height = graphContainer.clientHeight,
@@ -46,7 +46,19 @@ const createGraph = (selector, options) => {
     graphContainer.append(table);
     //Each box is a vertex and each vertex is connected to 8 other vertices except for corner ones.
     // Right, Left, Up, Down
-    // UpRight, UpLeft, DownRight, DownLeft;
+    
+    let graph = {
+        'rows' : trElements,
+        'columns' : tdElements,
+    }
+    return graph;
+}
+
+const updateView = (selector, graph) => {
+    let graphContainer = document.getElementById(selector),
+        tdElements = graph.columns,
+        trElements = graph.rows;
+    
     let leftCorner = 0, 
         RightCorner = (tdElements-1), 
         DownLeftCorner = trElements*(tdElements-1), 
@@ -63,26 +75,65 @@ const createGraph = (selector, options) => {
         else if(index%tdElements == 0) graphAdj[index] = Array(1,0,-tdElements,tdElements); //Down, Right, DownRight, Up, UpRight , it's left side edges
         else graphAdj[index] = Array(1,-1,-tdElements,tdElements);
     });
-    let visited = Array(trElements*tdElements).fill(false);
-    let parent = Array(trElements*tdElements).fill(-1);
-    let graph = {
-        'graphAdj' : graphAdj,
-        'visited' : visited,
-        'rows' : trElements,
-        'columns' : tdElements,
-        'parent' : parent
-    }
-    return graph;
+
+    graph.graphAdj = graphAdj;
+
+    let wallElements = graphContainer.querySelectorAll(".block-node");
+    wallElements.forEach(element => {
+        let row = parseInt(element.getAttribute('grow')),
+            column = parseInt(element.getAttribute('gcolumn')),
+            el = 0;
+        
+        // Right, Left, Up, Down
+        //remove from top adjacent
+        if(row-1 >= 0){
+            el = (row-1)*graph.columns + column;
+            graph.graphAdj[el][3] = 0; //3 denotes down element
+        }
+        //remove from down adjacent
+        if(row+1 < graph.rows){
+            el = (row+1)*graph.columns + column;
+            graph.graphAdj[el][2] = 0; //2 denotes up element
+        }
+        //remove from right adjacent
+        if(column+1 < graph.columns){
+            el = (row)*graph.columns + column+1;
+            graph.graphAdj[el][1] = 0; //1 denotes left element
+        }
+        //remove from left adjacent
+        if(column-1 >= 0){
+            el = (row)*graph.columns + column-1;
+            graph.graphAdj[el][0] = 0; //0 denotes right element
+        }
+    });
+
+    let visited = Array(graph.rows*graph.columns).fill(false);
+    let parent = Array(graph.rows*graph.columns).fill(-1);
+    let visitedElements = graphContainer.querySelectorAll(".visited");
+    visitedElements.forEach(element => {
+        element.classList.remove("visited");
+    });
+    let shortestPath = graphContainer.querySelectorAll(".shortest-path");
+    shortestPath.forEach(element => {
+        element.classList.remove("shortest-path");
+    });
+    graph.visited = visited;
+    graph.parent = parent;
 }
 
-async function colorVisitingNode(node, options) {
+async function colorVisitingNode(node, options, vizSpeed) {
     let dashContainer = document.getElementById(options.selector);
     let graphContainer = dashContainer.querySelector(".pp-graph-table");
     let grow = parseInt(node/options.columns);
     let gcolumn = parseInt(node%options.columns);
     let nodeElement = graphContainer.querySelector(`td[grow='${grow}'][gcolumn='${gcolumn}']`);
     nodeElement.classList.add("visited");
-    await sleep(10);
+    let speed = {
+        'slow' : 40,
+        'medium' : 20,
+        'fast' : 10
+    }
+    await sleep(speed[vizSpeed]);
 }
 
 
@@ -150,7 +201,12 @@ const mouseEnter = function() {
 
         if(startDrag) this.classList.add("start-node");
 
-        if(endDrag) this.classList.add("end-node");
+        else if(endDrag) this.classList.add("end-node");
+
+        else{
+            if(!this.classList.contains("start-node") && !this.classList.contains("end-node"))
+                this.classList.toggle("block-node");
+        }
     }
 };
 

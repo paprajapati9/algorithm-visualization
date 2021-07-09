@@ -1,17 +1,16 @@
 import style from "./bfs.css";
 
 export default async function bfs(){
-    let oldGraph = document.querySelector(".pp-graph-table");
-    let graph = this.graph;
-    if(oldGraph){
-        oldGraph.parentNode.removeChild(oldGraph)
-        graph = this.createGraph(this.selector, this.options);
+    if(!this.options.solve){
+        return this.createView(this.selector, this.options);
     }
+    graph = this.options.graph;
     console.log(graph, "graph");
+    this.updateView(this.selector, graph);
     let visited = graph.visited;
     let parent = graph.parent;
     let graphAdj = graph.graphAdj;
-    // let stack = new Stack(); 
+
     let queue = new Queue();
     let startRow = this.options.startRow,
         startCol = this.options.startCol,
@@ -36,11 +35,8 @@ export default async function bfs(){
     
     while (!queue.isEmpty()) {
         let visiting = queue.dequeue();
-        await this.colorVisitingNode(visiting, nodeOptions);
-        if(visiting == endNode){
-            console.log("Found the endNode");
-            break;
-        }
+        await this.colorVisitingNode(visiting, nodeOptions, this.options.speed);
+        if(visiting == endNode) break;
         for (let j = 0; j < graphAdj[visiting].length; j++) {
             let indexJ = visiting + graphAdj[visiting][j];
             if ((graphAdj[visiting][j] != 0) && (visited[indexJ] === false)) {  

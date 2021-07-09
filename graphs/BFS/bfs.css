@@ -62,9 +62,20 @@ table td{
     animation-play-state: running;
 }
 
+.block-node{
+    background: #34495e !important;
+    animation: blocker 0.5s linear;
+}
+
 @keyframes blinker {
     50% {
       background: red;
+    }
+}
+
+@keyframes blocker {
+    50% {
+      background: #34495e;
     }
 }
   
