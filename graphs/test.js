@@ -3,7 +3,7 @@ let graphsViz = new algoviz.GraphsViz({
     options: {
         solve: false,
         startRow : 2,
-        startCol : 15,
+        startCol : 3,
         endRow : 8,
         endCol : 9,
         speed: 'fast'
