@@ -10,7 +10,10 @@ let graphsViz = new algoviz.GraphsViz({
     }
 });
 
-let graph = graphsViz.bfs();
+let algoType = document.querySelector(".pp-viz-algo");
+let graph;
+if(algoType.value == "bfs") graph = graphsViz.bfs();
+else if(algoType.value == "dfs") graph = graphsViz.dfs();
 let onceRun = false;
 
 let submitBotton = document.querySelector(".pp-form button[type='submit']");
@@ -40,5 +43,6 @@ const runVisualizer = (graphObject) => {
         speed: speed.value
     }
     graphsViz.options = options;
-    graphsViz.bfs();
+    if(algoType.value == "bfs") graphsViz.bfs();
+    else if(algoType.value == "dfs") graphsViz.dfs();
 }
