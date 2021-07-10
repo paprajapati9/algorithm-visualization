@@ -1,4 +1,5 @@
 import bfs from "./BFS/bfs"
+import dfs from "./DFS/dfs"
 
 export default function GraphsViz({selector, options={}}){
     this.selector = selector;
@@ -10,6 +11,7 @@ export default function GraphsViz({selector, options={}}){
 }
 
 GraphsViz.prototype.bfs = bfs;
+GraphsViz.prototype.dfs = dfs;
 
 const createView = (selector, options) => {
     let graphContainer = document.getElementById(selector);
@@ -45,7 +47,7 @@ const createView = (selector, options) => {
     }
     graphContainer.append(table);
     //Each box is a vertex and each vertex is connected to 8 other vertices except for corner ones.
-    // Right, Left, Up, Down
+    // Right, Down, Left, Up
     
     let graph = {
         'rows' : trElements,
@@ -61,19 +63,19 @@ const updateView = (selector, graph) => {
     
     let leftCorner = 0, 
         RightCorner = (tdElements-1), 
-        DownLeftCorner = trElements*(tdElements-1), 
+        DownLeftCorner = (trElements-1)*(tdElements), 
         DownRightCorner = (trElements*tdElements-1);
 
     let graphAdj = Array(trElements*tdElements).fill();
 
     graphAdj.forEach((element, index) => {
-        if(index == leftCorner) graphAdj[index] = Array(1,0,0,tdElements); //Down, Right, DownRight
-        else if(index == RightCorner) graphAdj[index] = Array(0,-1,0,tdElements); //Down, Left, DownLeft
-        else if(index == DownLeftCorner) graphAdj[index] = Array(1,0,-tdElements,0); //Up, Right, UpRight
-        else if(index == DownRightCorner) graphAdj[index] = Array(0,-1,-tdElements,0); //Up, Left, UpLeft
-        else if((index+1)%tdElements == 0) graphAdj[index] = Array(0,-1,-tdElements,tdElements); //Down, Left, DownLeft, Up, UpLeft , it's right side edges
-        else if(index%tdElements == 0) graphAdj[index] = Array(1,0,-tdElements,tdElements); //Down, Right, DownRight, Up, UpRight , it's left side edges
-        else graphAdj[index] = Array(1,-1,-tdElements,tdElements);
+        if(index == leftCorner) graphAdj[index] = Array(1,tdElements,0,0); //Down, Right, DownRight
+        else if(index == RightCorner) graphAdj[index] = Array(0,tdElements,-1,0); //Down, Left, DownLeft
+        else if(index == DownLeftCorner) graphAdj[index] = Array(1,0,0,-tdElements); //Up, Right, UpRight
+        else if(index == DownRightCorner) graphAdj[index] = Array(0,0,-1,-tdElements); //Up, Left, UpLeft
+        else if((index+1)%tdElements == 0) graphAdj[index] = Array(0,tdElements,-1,-tdElements); //Down, Left, DownLeft, Up, UpLeft , it's right side edges
+        else if(index%tdElements == 0) graphAdj[index] = Array(1,tdElements,0,-tdElements); //Down, Right, DownRight, Up, UpRight , it's left side edges
+        else graphAdj[index] = Array(1,tdElements,-1,-tdElements);
     });
 
     graph.graphAdj = graphAdj;
@@ -88,7 +90,7 @@ const updateView = (selector, graph) => {
         //remove from top adjacent
         if(row-1 >= 0){
             el = (row-1)*graph.columns + column;
-            graph.graphAdj[el][3] = 0; //3 denotes down element
+            graph.graphAdj[el][1] = 0; //1 denotes down element
         }
         //remove from down adjacent
         if(row+1 < graph.rows){
@@ -98,7 +100,7 @@ const updateView = (selector, graph) => {
         //remove from right adjacent
         if(column+1 < graph.columns){
             el = (row)*graph.columns + column+1;
-            graph.graphAdj[el][1] = 0; //1 denotes left element
+            graph.graphAdj[el][3] = 0; //3 denotes left element
         }
         //remove from left adjacent
         if(column-1 >= 0){
