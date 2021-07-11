@@ -1,4 +1,4 @@
-# Algorithm Visualisation
+# Algorithm Visualizations
 
 A JS library of multiple algorithms visualisations which can be added to your website with just a few lines of code. 
 
