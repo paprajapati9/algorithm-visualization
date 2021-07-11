@@ -1,4 +1,4 @@
-# ppAlgoViz
+# Algorithm Visualisation
 
 Visualisation of multiple algorithms
 
