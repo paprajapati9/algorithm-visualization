@@ -1,6 +1,6 @@
 # Algorithm Visualisation
 
-Visualisation of multiple algorithms
+A JS library of multiple algorithms visualisations which can be added to your website with just a few lines of code. 
 
 ## List of Visualizations curretly included
 1. [Recursion](https://paprajapati9.github.io/ppAlgoViz/recursion/test.html) : 
