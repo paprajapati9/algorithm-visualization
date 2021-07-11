@@ -1,7 +1,9 @@
 # Algorithm Visualizations
 
 A JS library of multiple algorithms visualisations which can be added to your website with just a few lines of code. 
+
 Use link https://cdn.jsdelivr.net/gh/paprajapati9/pp-algo-viz@master/dist/PPviz.min.js to add the js library in your page.
+
 Use link https://cdn.jsdelivr.net/gh/paprajapati9/pp-algo-viz@master/dist/PPviz.min.css to add the related css in your page.
 
 ## List of Visualizations curretly included
