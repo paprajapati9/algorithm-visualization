@@ -16,3 +16,31 @@ Use link [https://cdn.jsdelivr.net/gh/paprajapati9/pp-algo-viz@master/dist/PPviz
     * Sudoku
 4. [Sorting](https://paprajapati9.github.io/pp-algo-viz/sorting/test.html)
     * Mergesort
+
+## Usage
+
+```
+let backtrackViz = new algoviz.BacktrackViz({
+    selector: "pp-backtrack-container", //container id where the visualization is to be added
+    options: { //options related to vizualization
+        solve: false,
+        speed: 'fast'
+    }
+}); 
+
+let sudoku = backtrackViz.sudoku(); //this will create the visualization view
+
+sudoku.then(sudokuObject =>{
+     backtrackViz.options.solve = true;
+     backtrackViz.options.sudoku = sudokuObject;
+     backtrackViz.sudoku();
+ }); //start the vizualization
+
+```
+
+For respective views check the test example : 
+
+1. [Recursion](https://github.com/paprajapati9/pp-algo-viz/blob/master/recursion/test.js)
+2. [Graphs](https://github.com/paprajapati9/pp-algo-viz/blob/master/graphs/test.js)
+3. [Backtracking](https://github.com/paprajapati9/pp-algo-viz/blob/master/backtracking/test.js)
+4. [Sorting](https://github.com/paprajapati9/pp-algo-viz/blob/master/sorting/test.js)
