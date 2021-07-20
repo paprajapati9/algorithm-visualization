@@ -12,3 +12,5 @@ A JS library of multiple algorithms visualisations which can be added to your we
     * Sudoku
 4. [Sorting](https://paprajapati9.github.io/pp-algo-viz/sorting/test.html)
     * Mergesort
+5. [Greedy](https://paprajapati9.github.io/pp-algo-viz/greedy/test.html)
+    * Graph Coloring (In Progress)
