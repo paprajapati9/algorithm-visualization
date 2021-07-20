@@ -16,7 +16,7 @@ Use link [https://cdn.jsdelivr.net/gh/paprajapati9/algorithm-visualization@maste
     * Sudoku
 4. [Sorting](https://paprajapati9.github.io/algorithm-visualization/sorting/test.html)
     * Mergesort
-5. [Greedy](https://paprajapati9.github.io/pp-algo-viz/greedy/test.html)
+5. [Greedy](https://paprajapati9.github.io/algorithm-visualization/greedy/test.html)
     * Graph Coloring (In Progress)
 
 ## Usage
