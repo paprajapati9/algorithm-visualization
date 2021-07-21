@@ -2,7 +2,7 @@ import style from "./graphcoloring.css";
 
 export default async function graphcoloring(){
     if(this.options.solve){
-        solveColoring(this.selector, this.options);
+        await solveColoring(this.selector, this.options);
     }else{
         return createGraph(this.selector, this.options);
     }
@@ -11,10 +11,20 @@ export default async function graphcoloring(){
 const createGraph = function(selector, options){
     let graph = new Graph(options, selector);
     graph.createView(selector);
+    console.log(graph);
     return graph;
 }
 
+const solveColoring = async function(selector, options){
+    let graph = options.graph;
+    console.log(options);
+    await graph.updateView(selector);
+}
+
 function Graph(options, selector){
+
+    this.nodesDegreeMap = Object();
+
     this.graphAdj = this.createRandomGraphAdj(options.size);
     console.log(this.graphAdj);
 
@@ -39,20 +49,30 @@ Graph.prototype.createRandomGraphAdj = function(size){
         numbers.sort(() => Math.random() - 0.5);
         numbers.splice(degree);
         graph[index] = numbers;
+        this.nodesDegreeMap[index] = numbers.length;
+        for (let i = 0; i < numbers.length; i++) {
+            this.nodesDegreeMap[numbers[i]] += 1;
+        }
     });
     return graph;
 }
 
+/**
+ * Divide our viewport into s times the number of nodes and 
+ * randomly assign a region to one node, draw the node at the mid 
+ * of that region by calculating the x and y coordinates of the region
+ * @param {String} selector : Id of the view container
+ */
 Graph.prototype.createNodeRegionMap = function(selector){
     let container = document.getElementById(selector);
     let cheight = container.clientHeight,
         clength = container.clientWidth,
         unit = parseInt(Math.sqrt((clength*cheight)/this.regions)),
         cols = parseInt(clength/unit),
-        regions = Array(this.regions).fill().map((_, index) => index+1);
+        regions = Array(this.regions).fill().map((_, index) => index);
     for (let i = 0; i < this.totalNodes; i++) {
         let region = regions[Math.floor((Math.random() * regions.length) - 1)];
-        //region = regions[region];
+
         const index = regions.indexOf(region);
         regions.splice(index, 1);
         this.nodesRegionMap[i] = region;
@@ -62,9 +82,6 @@ Graph.prototype.createNodeRegionMap = function(selector){
             bounds = container.getClientRects()[0];
         let x = col*unit + parseInt(bounds.x) - 11,
             y = row*unit + parseInt(bounds.y) - 8;
-
-        //console.log(x, y, "x y");
-        //console.log(container.getClientRects(), "getClientRects");
 
         let point = document.createElement('div');
         point.className = `pp-node-circle pp-node-${i}`;
@@ -80,6 +97,17 @@ Graph.prototype.createNodeRegionMap = function(selector){
 
 Graph.prototype.createView = function(selector){
     this.drawGraph(selector);
+}
+
+Graph.prototype.updateView = async function(selector){
+    console.log(this, "this");
+    let list = this.nodesDegreeMap;
+    let obj = Object.keys(list).sort(
+        function(a,b){
+            return list[b]-list[a]
+        }
+    );
+    console.log(obj);
 }
 
 
@@ -110,7 +138,8 @@ Graph.prototype.drawGraph = function(selector){
         for (let i = 0; i < this.nodePositions.length; i++) {
             for (let j = 0; j < this.graphAdj[i].length; j++) {
                 const ctx = canvas.getContext('2d');
-                drawLine(ctx, this.nodePositions[i], this.nodePositions[j]);
+                let connect = this.graphAdj[i][j];
+                drawLine(ctx, this.nodePositions[i], this.nodePositions[connect]);
             }
             
         }
