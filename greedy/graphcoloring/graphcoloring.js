@@ -49,7 +49,8 @@ Graph.prototype.createRandomGraphAdj = function(size){
         numbers.sort(() => Math.random() - 0.5);
         numbers.splice(degree);
         graph[index] = numbers;
-        this.nodesDegreeMap[index] = numbers.length;
+        if(this.nodesDegreeMap[index]) this.nodesDegreeMap[index] += degree
+        else this.nodesDegreeMap[index] = degree;
         for (let i = 0; i < numbers.length; i++) {
             this.nodesDegreeMap[numbers[i]] += 1;
         }
@@ -68,20 +69,32 @@ Graph.prototype.createNodeRegionMap = function(selector){
     let cheight = container.clientHeight,
         clength = container.clientWidth,
         unit = parseInt(Math.sqrt((clength*cheight)/this.regions)),
+        rows = parseInt(cheight/unit),
         cols = parseInt(clength/unit),
         regions = Array(this.regions).fill().map((_, index) => index);
+
+    let regionsMatrix = Array(rows).fill().map(()=>Array(cols).fill(0));
+    console.log(regionsMatrix, "regionsMatrix");
     for (let i = 0; i < this.totalNodes; i++) {
-        let region = regions[Math.floor((Math.random() * regions.length) - 1)];
+        let ranno = Math.floor((Math.random() * regions.length));
+        console.log(ranno, "random");
+        let region = regions[ranno];
 
         const index = regions.indexOf(region);
         regions.splice(index, 1);
-        this.nodesRegionMap[i] = region;
         
-        let row = parseInt(region/cols),
-            col = parseInt(region%cols),
+        this.nodesRegionMap[i] = region;      
+        
+        let row = Math.floor(region/cols),
+            col = Math.floor(region%cols),
             bounds = container.getClientRects()[0];
         let x = col*unit + parseInt(bounds.x) - 11,
             y = row*unit + parseInt(bounds.y) - 8;
+
+        console.log(row, col);
+        regionsMatrix[row][col] = i+1; //node number from 1
+        this.updateRegion(i, regionsMatrix, regions);
+        
 
         let point = document.createElement('div');
         point.className = `pp-node-circle pp-node-${i}`;
@@ -110,6 +123,74 @@ Graph.prototype.updateView = async function(selector){
     console.log(obj);
 }
 
+Graph.prototype.updateRegion = function(node, regionsMatrix, regions){
+    for (let i = 0; i < this.graphAdj[node].length; i++) {
+        let startIndex, endIndex;
+        let index1 = exists(regionsMatrix, node+1);
+        let index2 = exists(regionsMatrix, this.graphAdj[node][i]+1);
+
+        if(index2.length){
+            
+            if(index2[0] > index1[0]){
+                startIndex = index1; endIndex = index2;
+            }else if(index2[0] == index1[0]){
+                if(index2[1] > index1[1]) {startIndex = index1; endIndex = index2;}
+                else {startIndex = index2; endIndex = index1;}
+            }else {startIndex = index2; endIndex = index1;}
+
+            if(startIndex[0] == endIndex[0]){
+                let j = endIndex[1]-1;
+                while(j > startIndex[1]){
+                    regionsMatrix[startIndex[0]][j] = -1;
+                    j--;
+                }
+            } //same row
+            else if(startIndex[1] == endIndex[1]){
+                let j = endIndex[0]-1;
+                while(j > startIndex[0]){
+                    regionsMatrix[j,startIndex[0]] = -1;
+                    j--;
+                }
+            } //same column
+            else if(startIndex[1]-endIndex[1] == endIndex[0]-startIndex[0]){
+                let k = endIndex[1]+1;
+                let j = endIndex[0]-1;
+                while(j > startIndex[0]){
+                    regionsMatrix[j,k] = -1;
+                    j--; k++;
+                }
+            } //opp diagonal
+            else if(startIndex[1]-endIndex[1] == startIndex[0]-endIndex[0]){
+                let k = endIndex[1]-1;
+                let j = endIndex[0]-1;
+                while(j > startIndex[0]){
+                    regionsMatrix[j,k] = -1;
+                    j--; k--;
+                }
+            } //main diagonal
+
+            // let region1 = startIndex[0]*regionsMatrix.length + startIndex[1];
+                // let region2 = endIndex[0]*regionsMatrix.length + endIndex[1];
+                // let length = region2-region1;
+                // const index = regions.indexOf(region);
+                // regions.splice(index, length);
+        }
+        console.log(startIndex, "startIndex");
+        console.log(endIndex, "endIndex");
+    }
+}
+
+function exists(arr, search) {
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr[i].length; j++) {
+            if(arr[i][j] == search){
+                return [i, j];
+            }
+        }
+    }
+    return [];
+}
+
 
 /**
  * TODO : Utility functions-> To be moved later
@@ -135,10 +216,12 @@ Graph.prototype.drawGraph = function(selector){
     const canvas = container.querySelector("canvas");
     if (canvas.getContext) {
         console.log("was inside");
-        for (let i = 0; i < this.nodePositions.length; i++) {
+        for (let i = 0; i < this.graphAdj.length; i++) {
             for (let j = 0; j < this.graphAdj[i].length; j++) {
                 const ctx = canvas.getContext('2d');
                 let connect = this.graphAdj[i][j];
+                console.log(i, "from");
+                console.log(connect, "to");
                 drawLine(ctx, this.nodePositions[i], this.nodePositions[connect]);
             }
             
