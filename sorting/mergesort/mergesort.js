@@ -25,7 +25,7 @@ MergeSort.prototype.updateView = async function(start, sortedArr){
     let sortContainer = container.querySelector(".pp-array-view");
     console.log(container, "container");
     console.log(sortedArr);
-    console.log(this.array, "this.array")
+    console.log(this.array, "this.array");
     let maxHeight = 300;
 
     for (let i = 0; i < sortedArr.length; i++) {
@@ -41,7 +41,7 @@ MergeSort.prototype.updateView = async function(start, sortedArr){
             el2.setAttribute('data-value', value1);
             el1.setAttribute('data-value', sortedArr[i]);
 
-            await sleep(100);
+            await sleep(500);
 
             el1.classList.remove("pp-active-sort-elment");
             el2.classList.remove("pp-active-sort-elment");

@@ -27,8 +27,8 @@ Sort.prototype.createView = function(selector) {
     console.log(this.array, "array");
     let arrayGraph = document.createElement('div');
     arrayGraph.className = 'pp-array-view';
-    let arrayGraphSort = document.createElement('div');
-    arrayGraphSort.className = 'pp-array-view-sort';
+    //let arrayGraphSort = document.createElement('div');
+    //arrayGraphSort.className = 'pp-array-view-sort';
     for (let i = 0; i < this.array.length; i++) {
         let graphElement = document.createElement('div');
         let maxHeight = 300,
@@ -41,5 +41,5 @@ Sort.prototype.createView = function(selector) {
         arrayGraph.append(graphElement);
     }
     container.append(arrayGraph);
-    container.append(arrayGraphSort);
+    //container.append(arrayGraphSort);
 }
