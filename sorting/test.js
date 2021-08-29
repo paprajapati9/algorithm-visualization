@@ -16,7 +16,6 @@ sortSize.addEventListener("input", () => {
     sortc.parentNode.removeChild(sortc);
     sortingViz.options.size = parseInt(sortSize.value);
     mergesort = sortingViz.mergesort();
-   
 })
 
 let submitBotton = document.querySelector(".pp-form button[type='submit']");

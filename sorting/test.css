@@ -2,6 +2,12 @@
     width: 90%;
 }
 
-.pp-array-size{
+.pp-array-size-container{
     width: 340px;
+    cursor: pointer;
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    grid-template-columns: max-content;
+    grid-gap: 10px;
 }

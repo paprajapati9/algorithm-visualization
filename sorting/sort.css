@@ -10,7 +10,11 @@
 }
 
 .pp-active-sort-elment{
-    animation: blinker 0.2s linear;
+    animation: blinker 0.1s linear;
+}
+
+.pp-array-size{
+    cursor: pointer;
 }
 
 @keyframes blinker {
