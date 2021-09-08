@@ -16,6 +16,7 @@ const solveSort = async (selector, options) => {
 function MergeSort(selector, options){
     this.array = options.array;
     this.selector = selector;
+    this.speed = options.speed;/**/
     this.i = 0;
     console.log(this.array, "this.array");
 }
@@ -28,6 +29,25 @@ MergeSort.prototype.updateView = async function(start, sortedArr){
     console.log(this.array, "this.array");
     let maxHeight = 300;
 
+    let action_speed = [];
+    if(this.speed=='fast')
+    {
+        action_speed.push("pp-active-sort-elment-fast");
+        action_speed.push(100);
+    }
+
+    else if(this.speed=='medium')
+    {
+        action_speed.push("pp-active-sort-elment-medium");
+        action_speed.push(400);
+    }
+
+    else if(this.speed=='slow')
+    {
+        action_speed.push("pp-active-sort-elment-slow");
+        action_speed.push(800);
+    }
+
     for (let i = 0; i < sortedArr.length; i++) {
         let el1 = sortContainer.childNodes[start];
         let value1 = el1.getAttribute('data-value');
@@ -35,16 +55,20 @@ MergeSort.prototype.updateView = async function(start, sortedArr){
         if(el1 != el2){
             el1.style.height = (sortedArr[i]/this.array.length)*maxHeight+'px';
             el2.style.height = (value1/this.array.length)*maxHeight+'px';
-            el1.classList.add("pp-active-sort-elment");
-            el2.classList.add("pp-active-sort-elment");
-
+          
+            /**/
+            el1.classList.add(action_speed[0]);    
+            el2.classList.add(action_speed[0]);
+            /**/
+    
             el2.setAttribute('data-value', value1);
             el1.setAttribute('data-value', sortedArr[i]);
+            /**/
+            await sleep(action_speed[1]);
 
-            await sleep(500);
-
-            el1.classList.remove("pp-active-sort-elment");
-            el2.classList.remove("pp-active-sort-elment");
+            el1.classList.remove(action_speed[0]);
+            el2.classList.remove(action_speed[0]);
+            /**/
         }
         this.array[start] = sortedArr[i];
         start++;
