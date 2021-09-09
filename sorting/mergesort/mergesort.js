@@ -1,6 +1,8 @@
 export default async function mergesort(){
     if(this.options.solve){
         await solveSort(this.selector, this.options);
+        this.isReady=true
+        // console.log("ENDOFPROGRAM###############",this.isReady)
     }else{
         return this.generateSort(this.selector, this.options);
     }
@@ -18,15 +20,15 @@ function MergeSort(selector, options){
     this.selector = selector;
     this.speed = options.speed;/**/
     this.i = 0;
-    console.log(this.array, "this.array");
+    // console.log(this.array, "this.array");
 }
 
 MergeSort.prototype.updateView = async function(start, sortedArr){
     let container = document.getElementById(this.selector);
     let sortContainer = container.querySelector(".pp-array-view");
-    console.log(container, "container");
-    console.log(sortedArr);
-    console.log(this.array, "this.array");
+    // console.log(container, "container");
+    // console.log(sortedArr);
+    // console.log(this.array, "this.array");
     let maxHeight = 300;
 
     let action_speed = [];
@@ -90,7 +92,7 @@ MergeSort.prototype.sort = async function(start, end){
 }  
 
 MergeSort.prototype.merge = async function(start, mid, end){
-    console.log(this.array, "this.array after");
+    // console.log(this.array, "this.array after");
     let mergeArray = Array();
     // console.log(start, "start");
     // console.log(mid, "mid");
@@ -106,7 +108,6 @@ MergeSort.prototype.merge = async function(start, mid, end){
             ar2Index++;
         } 
     }
-
 
     while(ar1Index <= mid){
         mergeArray.push(this.array[ar1Index]);
@@ -127,7 +128,7 @@ MergeSort.prototype.merge = async function(start, mid, end){
     //     ar1Index++;
     // }
 
-    console.log(mergeArray);
+    // console.log(mergeArray);
 
 }
 
