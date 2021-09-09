@@ -11,12 +11,16 @@
     <link type="text/css" rel="stylesheet" href="test.css">
 </head>
 <body>
+
     <div id="pp-algoviz-selector" class="pp-algoviz-dashboard">
         <div class="pp-viz-navabar">
             <h2 id='nav-heading'>Merge Sort <span style="color:rgb(250, 71, 175); font-size:40px;">V</span>isualization</h2>
             <form class="pp-form">
                 <div class="pp-form-row">
                     <button type="submit">Go</button>
+                </div>
+                <div class="pp-reset">
+                    <button type="submit">Re</button>
                 </div>
                 <div class="pp-form-row pp-split-2-column">
                     <label>Speed</label>
@@ -28,17 +32,21 @@
                 </div>
             </form>
         </div>
-        <div id="pp-sorting-container" class="pp-sorting-container">
-        </div>
+
+        <div id="pp-sorting-container" class="pp-sorting-container"></div>
+
         <div class="range-value-container">
             <span id="range-value">15</span>
         </div>
+
         <div>
             <input class="pp-array-size" id='rangeSlider' type="range" min="5" max="65" value="15" step="1" onchange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)">            
             <script type="text/javascript">
                 const rangeValue = document.getElementById('range-value');
                 const rangeSlider = document.getElementById('rangeSlider');
-                function rangeSlide(value){
+                
+                function rangeSlide(value)
+                {
                     rangeValue.innerHTML= value;
                     var bulletPosition = (rangeSlider.value)/(rangeSlider.max);
                    rangeValue.style.left = -165+(bulletPosition*310) + "px";
