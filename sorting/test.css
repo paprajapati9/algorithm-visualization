@@ -26,7 +26,7 @@
     font-weight: 600; 
     margin-top: 50px;
 
-    transform: translate(-50%,-50%);
+    transform: translate(0%,-50%);
 
 }
 
@@ -74,7 +74,7 @@
     }
 }
 .pp-sorting-container{
-    width: 80%;
+    width: 85%;
 }
 
 .pp-array-size{
@@ -155,3 +155,22 @@
     grid-template-columns: max-content;
     grid-gap: 10px;
 } */
+
+@media screen and (max-width : 820px) {
+    .pp-array-element{
+        width: 90%;
+    }
+}
+
+@media screen and (max-width : 620px) {
+    .pp-form button{
+        transform: unset;
+        margin-top: unset;
+    }
+}
+
+@media screen and (max-width : 460px) {
+    .pp-sorting-container{
+        width: 95%;
+    }
+}

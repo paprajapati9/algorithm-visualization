@@ -8,7 +8,7 @@
     background-image: linear-gradient(46deg,#633bb1,#ff7e9c);
     box-shadow: -3px 3px 4px 0.5px rgb(101 101 101 / 51%);
     border-radius: 0 0 4px 4px;
-    margin:0 3px;
+    margin:0 2px;
 }
 
 .pp-active-sort-elment-fast{
@@ -27,9 +27,26 @@
     cursor: pointer;
 }
 
+.pp-sort-inprogress .pp-form button,
+.pp-sort-inprogress .pp-array-size{
+    pointer-events: none !important;
+}
+
 @keyframes blinker {
     50% {
         background: rgb(65, 211, 121);
+    }
+}
+
+@media screen and (max-width : 820px) {
+    .pp-array-element{
+        margin:0 2px;
+    }
+}
+
+@media screen and (max-width : 520px) {
+    .pp-array-element{
+        margin:0 1px;
     }
 }
  

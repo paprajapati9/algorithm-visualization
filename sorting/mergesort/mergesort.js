@@ -1,8 +1,10 @@
 export default async function mergesort(){
     if(this.options.solve){
+        document.body.classList.add("pp-sort-inprogress");
         await solveSort(this.selector, this.options);
-        this.isReady=true
-        // console.log("ENDOFPROGRAM###############",this.isReady)
+        this.isReady=true;
+        this.options.solve=false;
+        document.body.classList.remove("pp-sort-inprogress");
     }else{
         return this.generateSort(this.selector, this.options);
     }
