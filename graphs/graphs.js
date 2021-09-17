@@ -69,7 +69,7 @@ const updateView = (selector, graph) => {
     let graphAdj = Array(trElements*tdElements).fill();
 
     graphAdj.forEach((element, index) => {
-        if(index == leftCorner) graphAdj[index] = Array(1,tdElements,0,0); //Down, Right, DownRight
+        if(index == leftCorner) graphAdj[index] = Array(1,tdElements,0,0); //Right, Down, Left, Top
         else if(index == RightCorner) graphAdj[index] = Array(0,tdElements,-1,0); //Down, Left, DownLeft
         else if(index == DownLeftCorner) graphAdj[index] = Array(1,0,0,-tdElements); //Up, Right, UpRight
         else if(index == DownRightCorner) graphAdj[index] = Array(0,0,-1,-tdElements); //Up, Left, UpLeft
@@ -95,12 +95,12 @@ const updateView = (selector, graph) => {
         //remove from down adjacent
         if(row+1 < graph.rows){
             el = (row+1)*graph.columns + column;
-            graph.graphAdj[el][2] = 0; //2 denotes up element
+            graph.graphAdj[el][3] = 0; //3 denotes up element
         }
         //remove from right adjacent
         if(column+1 < graph.columns){
             el = (row)*graph.columns + column+1;
-            graph.graphAdj[el][3] = 0; //3 denotes left element
+            graph.graphAdj[el][2] = 0; //2 denotes left element
         }
         //remove from left adjacent
         if(column-1 >= 0){
@@ -144,7 +144,7 @@ async function colorShortestPath(path, options) {
     let graphContainer = dashContainer.querySelector(".pp-graph-table");
     for (let i = 0; i < path.length; i++) {
         const node = path[i];
-        if(node == options.startNode || node == options.endNode) continue;
+        // if(node == options.startNode || node == options.endNode) continue;
         let grow = parseInt(node/options.columns);
         let gcolumn = parseInt(node%options.columns);
         let nodeElement = graphContainer.querySelector(`td[grow='${grow}'][gcolumn='${gcolumn}']`);

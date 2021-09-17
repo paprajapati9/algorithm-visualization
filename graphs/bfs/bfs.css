@@ -11,7 +11,7 @@ table td{
 }
 
 .pp-graph-table td.visited:not(.start-node, .end-node){
-    background: yellow;
+    background-color: #00ffc4;
 }
 
 .pp-graph-table td.start-node svg,
@@ -21,17 +21,17 @@ table td{
 }
 
 .pp-graph-table td.visited:not(.start-node, .end-node){
-    animation: blinker 0.5s linear;
+    animation: blinker 0.1s linear;
 }
 
 .pp-graph-table td.shortest-path{
-    background: #6950A1 !important;
+    background-color: #f1f500c4 !important;
+    border: none;
 }
 
 .start-node{
     border: 1px solid rgb(175, 216, 248); 
     background-image: url("../assets/icons/start.svg");
-    /* background-color: rgb(255, 254, 106); */
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -48,7 +48,6 @@ table td{
 .end-node{
     border: 1px solid rgb(175, 216, 248); 
     background-image: url("../assets/icons/end.svg");
-    /* background-color: rgb(255, 254, 106); */
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -65,11 +64,12 @@ table td{
 .block-node{
     background: #34495e !important;
     animation: blocker 0.5s linear;
+    border: none;
 }
 
 @keyframes blinker {
     50% {
-      background: red;
+      background: rgb(164, 250, 217);
     }
 }
 
