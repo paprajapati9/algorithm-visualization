@@ -3,7 +3,8 @@
     position: relative;
     width: 20px;
     height: 200px;
-    background-color: #444;
+    /* background-color: rgb(95, 77, 39); */
+    background-image: linear-gradient(to right, #debd8c,#eac07b ,#d29b3f,#b98e61);
     border-radius: 7px;
 }
 
@@ -23,7 +24,7 @@
 }
 
 .pp-hanoi-tower-element:nth-of-type(2){ /** First one is the circle to make it 3d **/
-    bottom: 0;
+    bottom: 0px;
 }
 
 .pp-hanoi-tower-element:nth-of-type(3){
@@ -36,7 +37,7 @@
 
 .pp-hanoi-tower-element-1{
     width: 60px;
-    background-image: linear-gradient(to right, #f1d3a6,#deb168 ,#deb168,#b9873b);
+    background-image: linear-gradient(92deg, #eab38b,#ff5d5d ,#f55440,#ef3d3c);
     height: 20px;
     margin-left: -20px;
     border-radius: 5px;
@@ -46,7 +47,8 @@
 .pp-hanoi-tower-element-2{
     width: 80px;
     border-radius: 5px;
-    background-image: linear-gradient(to right, #c4e08c,#8cec74,#8cec74,#489a0a);    height: 20px;
+    background-image: linear-gradient(to right, #c4e08c,#8cec74,#8cec74,#489a0a);    
+    height: 20px;
     margin-left: -30px;
     position: absolute;
 }
@@ -57,7 +59,7 @@
     margin-left: -40px;
     position: absolute;
     border-radius: 5px;
-    background-image: linear-gradient(to right, #82a6d2,#347da9, #347da9,#2b59ad);
+    background-image: linear-gradient(to right, #c1e0e6,#6c9cb9, #4b88ad,#18418c)
 }
 
 .pp-hanoi-tower-top-circle{
@@ -65,7 +67,8 @@
     left: 45px;
     width: 20px;
     height: 8.3px;
-    background-color: #666;
+    /* background-color: rgb(173, 119, 18); */
+    background-image: linear-gradient(to right, #9c5f05,#9e680e ,#c78618,#8e5d15);
     -moz-border-radius: 60px / 25px;
     -webkit-border-radius: 60px / 25px;
     border-radius: 60px / 25px;
