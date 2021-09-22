@@ -32,7 +32,8 @@ const removeDisks = () => {
 
 const addDisks = (tower) => {
     let rod = document.querySelector(`.pp-hanoi-tower-rod.rod${tower}`);
-    rod.innerHTML = `<div class="pp-hanoi-tower-element pp-hanoi-tower-element-3"></div>
+    rod.innerHTML = `<div class="pp-hanoi-tower-top-circle"></div>
+    <div class="pp-hanoi-tower-element pp-hanoi-tower-element-3"></div>
     <div class="pp-hanoi-tower-element pp-hanoi-tower-element-2"></div>
     <div class="pp-hanoi-tower-element pp-hanoi-tower-element-1"></div>
     <p class="pp-hanoi-tower-name">Tower ${tower}</p>`;

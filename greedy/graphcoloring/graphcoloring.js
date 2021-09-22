@@ -51,7 +51,7 @@ Graph.prototype.createNodePoint  = function (selector, center, radius, angle, no
     point.style.top = y+'px';
     point.style.left = x+'px';
     //console.log(point, "point");
-    this.nodePositions[nodeNumber] = [x-canvasLeft+10, y-canvasTop+10];
+    this.nodePositions[nodeNumber] = [x-canvasLeft+15, y-canvasTop+15];
     container.append(point);
 }
 
