@@ -1,5 +1,7 @@
 import style from "./graphcoloring.css";
 
+var colors = ["red", "blue", "yellow", "green", "orange", "#4deeea", "#f000ff"]
+
 export default async function graphcoloring(){
     if(this.options.solve){
         await solveColoring(this.selector, this.options);
@@ -67,6 +69,8 @@ function Graph(options, selector){
     this.regions = (this.totalNodes)*(this.totalNodes);
 
     this.nodePositions = Array(this.totalNodes);
+
+    this.nodeColors = Array(this.totalNodes).fill(0);
 }
 
 Graph.prototype.drawGraph = function(selector){   
@@ -138,4 +142,45 @@ Graph.prototype.createRandomGraphAdj = function(size){
 
 Graph.prototype.createView = function(selector){
     this.drawGraph(selector);
+}
+
+Graph.prototype.updateView = async function(selector){
+    console.log(this.nodesDegreeMap, "as");
+
+    const map = this.nodesDegreeMap;
+    let maxDegreeKeySorted = Object.keys(map).sort(function(a,b){return map[b]-map[a]});
+    let color = 0;
+    for (let i = 0; i < maxDegreeKeySorted.length; i++) {
+        let node = parseInt(maxDegreeKeySorted[i]);
+        let connected = this.graphAdj[node];
+        for (let j = 0; j < connected.length; j++) {
+            let cnode = connected[j];
+            if(!this.nodeColors[cnode] || (this.nodeColors[cnode]==this.nodeColors[node] && this.nodeColors[cnode])){
+                this.nodeColors[cnode] = colors[color]
+                let node = document.getElementById(selector).querySelector(`.pp-node-${cnode}`);
+                node.style.background = this.nodeColors[cnode];
+                await sleep(1000);
+            }
+        }
+        if(connected.length > 0) color++;
+        console.log(connected, "connected");
+    }
+
+    // for (let i = 0; i < this.nodeColors.length; i++) {
+    //     let node = document.getElementById(selector).querySelector(`.pp-node-${i}`);
+    //     node.style.background = this.nodeColors[i];
+        
+    // }
+    console.log(this.nodeColors, "sort");
+}
+
+/**
+ * 
+ * @param {int} ms : time in milliseconds for which the program needs to be paused
+ * @returns : A seTimeout promise that is resolved ms milliseconds later
+ */
+ function sleep(ms) {
+    return new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
 }
